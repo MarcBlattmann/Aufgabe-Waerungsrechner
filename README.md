@@ -1,3 +1,5 @@
+> ℹ️ **Info:** This is fully ai generated!
+
 # 💱 Währungsrechner
 
 Ein moderner, komponentenbasierter Währungsrechner entwickelt mit **Next.js** und **React**. Die Anwendung ermöglicht die schnelle und einfache Umrechnung zwischen verschiedenen internationalen Währungen.
