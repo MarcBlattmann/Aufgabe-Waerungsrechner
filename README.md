@@ -1,3 +1,5 @@
+> ℹ️ **Info:** This is fully ai generated!
+
 # 💱 Währungsrechner
 
 Ein moderner, komponentenbasierter Währungsrechner entwickelt mit **Next.js** und **React**. Die Anwendung ermöglicht die schnelle und einfache Umrechnung zwischen verschiedenen internationalen Währungen.
@@ -84,25 +86,6 @@ src/
    http://localhost:3000
    ```
 
-## 📋 Verfügbare Scripts
-
-```bash
-# Development Server starten
-npm run dev
-
-# Production Build erstellen
-npm run build
-
-# Production Server starten
-npm start
-
-# Code Linting
-npm run lint
-
-# TypeScript Check
-npm run type-check
-```
-
 ## 🧩 Komponenten-Architektur
 
 ### Core Komponenten
@@ -168,91 +151,6 @@ interface ButtonProps {
 - Optimiert für verschiedene Bildschirmgrößen
 - Touch-freundliche Bedienelemente
 - Klare Typografie und Kontraste
-
-## 🔧 Anpassungen
-
-### Neue Währungen hinzufügen
-Bearbeiten Sie das `currencies` Array in `CurrencyConverter.tsx`:
-
-```tsx
-const currencies: Currency[] = [
-  // ...existing currencies
-  { code: 'NEW', name: 'New Currency', symbol: 'N$' },
-];
-```
-
-### Styling anpassen
-Das Projekt verwendet Tailwind CSS. Styles können durch Änderung der className-Properties angepasst werden.
-
-### API-Integration
-Ersetzen Sie die `mockExchangeRates` in `fetchExchangeRates()` durch echte API-Aufrufe:
-
-```tsx
-const fetchExchangeRates = async () => {
-  try {
-    const response = await fetch('https://api.exchangerate-api.com/v4/latest/EUR');
-    const data = await response.json();
-    // Process real data...
-  } catch (error) {
-    console.error('API Error:', error);
-  }
-};
-```
-
-## 🧪 Testing
-
-Das Projekt ist für Testing vorbereitet. Empfohlene Testing-Libraries:
-- Jest für Unit Tests
-- React Testing Library für Component Tests
-- Cypress für E2E Tests
-
-## 📦 Deployment
-
-### Vercel (Empfohlen)
-```bash
-npm install -g vercel
-vercel
-```
-
-### Netlify
-```bash
-npm run build
-# Upload dist/ folder to Netlify
-```
-
-### Docker
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-## 🤝 Contributing
-
-1. Fork das Repository
-2. Erstellen Sie einen Feature Branch (`git checkout -b feature/neue-funktion`)
-3. Commiten Sie Ihre Änderungen (`git commit -m 'Neue Funktion hinzugefügt'`)
-4. Pushen Sie den Branch (`git push origin feature/neue-funktion`)
-5. Erstellen Sie einen Pull Request
-
-## 📄 Lizenz
-
-Dieses Projekt steht unter der MIT-Lizenz. Details finden Sie in der [LICENSE](LICENSE) Datei.
-
-## 👥 Autoren
-
-- **Ihr Name** - *Initial work* - [GitHub](https://github.com/yourusername)
-
-## 🙏 Danksagungen
-
-- Next.js Team für das großartige Framework
-- Tailwind CSS für das Utility-First CSS Framework
-- Lucide für die schönen Icons
 - ExchangeRate-API für Wechselkurs-Daten (zukünftige Integration)
 
 ---
