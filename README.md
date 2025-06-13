@@ -84,25 +84,6 @@ src/
    http://localhost:3000
    ```
 
-## 📋 Verfügbare Scripts
-
-```bash
-# Development Server starten
-npm run dev
-
-# Production Build erstellen
-npm run build
-
-# Production Server starten
-npm start
-
-# Code Linting
-npm run lint
-
-# TypeScript Check
-npm run type-check
-```
-
 ## 🧩 Komponenten-Architektur
 
 ### Core Komponenten
