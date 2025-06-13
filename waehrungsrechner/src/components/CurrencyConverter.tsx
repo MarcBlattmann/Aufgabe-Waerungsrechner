@@ -1,7 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowUpDown, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
+import InputField from './InputField';
+import SelectField from './SelectField';
+import SwapButton from './SwapButton';
+import ResultDisplay from './ResultDisplay';
+import ExchangeRateInfo from './ExchangeRateInfo';
+import Button from './Button';
 
 interface Currency {
   code: string;
@@ -32,10 +38,8 @@ export default function CurrencyConverter() {
   const [toCurrency, setToCurrency] = useState<string>('USD');
   const [exchangeRates, setExchangeRates] = useState<ExchangeRates>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [lastUpdated, setLastUpdated] = useState<string>('');
-  const [convertedAmount, setConvertedAmount] = useState<number>(0);
+  const [lastUpdated, setLastUpdated] = useState<string>('');  const [convertedAmount, setConvertedAmount] = useState<number>(0);
 
-  // Mock exchange rates - in a real app, you would fetch from an API
   const mockExchangeRates: ExchangeRates = {
     'EUR-USD': 1.09,
     'EUR-GBP': 0.85,
@@ -74,12 +78,10 @@ export default function CurrencyConverter() {
     'CHF-NOK': 12.34,
     'CHF-DKK': 7.77,
   };
-
   const fetchExchangeRates = async () => {
     setLoading(true);
     try {
-      // In a real application, you would fetch from a real API
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
       setExchangeRates(mockExchangeRates);
       setLastUpdated(new Date().toLocaleTimeString('de-DE'));
     } catch (error) {
@@ -103,9 +105,7 @@ export default function CurrencyConverter() {
           const rateKey = `${fromCurrency}-${toCurrency}`;
           const rate = exchangeRates[rateKey];
           if (rate) {
-            setConvertedAmount(numAmount * rate);
-          } else {
-            // Try reverse rate
+            setConvertedAmount(numAmount * rate);          } else {
             const reverseRateKey = `${toCurrency}-${fromCurrency}`;
             const reverseRate = exchangeRates[reverseRateKey];
             if (reverseRate) {
@@ -121,9 +121,7 @@ export default function CurrencyConverter() {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
   };
-
   const handleAmountChange = (value: string) => {
-    // Allow only numbers and decimal point
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setAmount(value);
     }
@@ -137,98 +135,49 @@ export default function CurrencyConverter() {
       maximumFractionDigits: 2,
     }).format(amount);
   };
-
   return (
     <div className="max-w-md mx-auto">
       <div className="bg-white border border-gray-200 rounded-lg p-6">
-        {/* Amount Input */}        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
-            Betrag
-          </label>
-          <input
-            type="text"
-            value={amount}
-            onChange={(e) => handleAmountChange(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-            placeholder="Betrag eingeben"
-          />
-        </div>
+        <InputField
+          label="Betrag"
+          value={amount}
+          onChange={handleAmountChange}
+          placeholder="Betrag eingeben"
+        />
 
-        {/* From Currency */}        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
-            Von
-          </label>
-          <select
-            value={fromCurrency}
-            onChange={(e) => setFromCurrency(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-          >
-            {currencies.map((currency) => (
-              <option key={currency.code} value={currency.code}>
-                {currency.code} - {currency.name}
-              </option>
-            ))}
-          </select>
-        </div>        {/* Swap Button */}
-        <div className="flex justify-center mb-4">
-          <button
-            onClick={swapCurrencies}
-            className="p-2 bg-gray-200 hover:bg-gray-300 border border-gray-400 rounded-md text-gray-700"
-            title="Währungen tauschen"
-          >
-            <ArrowUpDown size={16} color="#374151" />
-          </button>
-        </div>
+        <SelectField
+          label="Von"
+          value={fromCurrency}
+          onChange={setFromCurrency}
+          options={currencies}
+        />
 
-        {/* To Currency */}        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-800 mb-2">
-            Nach
-          </label>
-          <select
-            value={toCurrency}
-            onChange={(e) => setToCurrency(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-          >
-            {currencies.map((currency) => (
-              <option key={currency.code} value={currency.code}>
-                {currency.code} - {currency.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <SwapButton onSwap={swapCurrencies} />
 
-        {/* Result */}
-        <div className="bg-gray-50 border border-gray-200 rounded-md p-4 mb-4">
-          <div className="text-center">            <div className="text-sm text-gray-700 mb-1">
-              Ergebnis
-            </div>
-            <div className="text-xl font-semibold text-gray-900">
-              {loading ? (
-                <div className="flex items-center justify-center text-gray-700">
-                  <RefreshCw className="mr-2" size={16} color="#374151" />
-                  Berechne...
-                </div>
-              ) : (
-                formatCurrency(convertedAmount, toCurrency)
-              )}
-            </div>
-            {!loading && (
-              <div className="text-sm text-gray-600 mt-1">
-                {amount} {fromCurrency} = {convertedAmount.toFixed(4)} {toCurrency}
-              </div>
-            )}
-          </div>
-        </div>
+        <SelectField
+          label="Nach"
+          value={toCurrency}
+          onChange={setToCurrency}
+          options={currencies}
+        />
 
-        {/* Refresh Button and Last Updated */}
-        <div className="flex items-center justify-between">          <button
+        <ResultDisplay
+          loading={loading}
+          amount={amount}
+          fromCurrency={fromCurrency}
+          toCurrency={toCurrency}
+          convertedAmount={convertedAmount}
+          formatCurrency={formatCurrency}
+        />
+
+        <div className="flex items-center justify-between">
+          <Button
             onClick={fetchExchangeRates}
             disabled={loading}
-            className="flex items-center px-3 py-1 bg-gray-200 hover:bg-gray-300 border border-gray-400 text-gray-800 rounded-md text-sm disabled:opacity-50"
           >
             <RefreshCw className="mr-1" size={14} color="#374151" />
             Aktualisieren
-          </button>
+          </Button>
           {lastUpdated && (
             <div className="text-xs text-gray-700">
               Aktualisiert: {lastUpdated}
@@ -237,31 +186,11 @@ export default function CurrencyConverter() {
         </div>
       </div>
 
-      {/* Exchange Rate Info */}
-      <div className="mt-4 bg-white border border-gray-200 rounded-lg p-4">        <h3 className="text-base font-semibold text-gray-900 mb-2">
-          Wechselkurs Information
-        </h3>
-        <div className="text-sm text-gray-700">
-          <div className="flex justify-between">
-            <span>1 {fromCurrency} =</span>
-            <span className="font-medium">
-              {exchangeRates[`${fromCurrency}-${toCurrency}`]?.toFixed(4) || 
-               (exchangeRates[`${toCurrency}-${fromCurrency}`] ? 
-                (1 / exchangeRates[`${toCurrency}-${fromCurrency}`]).toFixed(4) : 
-                'N/A')} {toCurrency}
-            </span>
-          </div>
-          <div className="flex justify-between mt-1">
-            <span>1 {toCurrency} =</span>
-            <span className="font-medium">
-              {exchangeRates[`${toCurrency}-${fromCurrency}`]?.toFixed(4) || 
-               (exchangeRates[`${fromCurrency}-${toCurrency}`] ? 
-                (1 / exchangeRates[`${fromCurrency}-${toCurrency}`]).toFixed(4) : 
-                'N/A')} {fromCurrency}
-            </span>
-          </div>
-        </div>
-      </div>
+      <ExchangeRateInfo
+        fromCurrency={fromCurrency}
+        toCurrency={toCurrency}
+        exchangeRates={exchangeRates}
+      />
     </div>
   );
 }
